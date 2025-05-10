@@ -14,6 +14,5 @@ dist-ssr
 *.sublime-workspace
 *.sublime-project
 # Local env files
-.env
-.env.*
+
 
