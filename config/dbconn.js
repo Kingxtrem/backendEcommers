@@ -4,7 +4,7 @@ dotenv.config()
 
 
 const connectDB = async () => {
-    let dbUrl = process.env.MONGO_URL
+    let dbUrl = "mongodb+srv://tantubaykingshuk:9MJE7RO9IVQKKkgx@cluster0.2liq5fj.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
     try {
         await mongoose.connect(dbUrl);
         console.log("mongodb connected succefully")
