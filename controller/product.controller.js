@@ -25,8 +25,8 @@ module.exports.createProduct = async (req, res) => {
 }
 module.exports.getAllProducts = async (req, res) => {
     try {
-        const products = await product.findAll();
-        res.status(200).json({ success: true, products });
+        const products = await product.find();
+        res.status(200).json({ success: true, [products] });
     } catch (error) {
         console.error("Error fetching products:", error);
         res.status(500).json({ success: false, message: "Internal server problem" });
