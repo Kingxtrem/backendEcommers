@@ -12,11 +12,11 @@ module.exports.register = async (req, res) => {
         return res.status(400).json({ success: false, message: "All fields are required!" })
     }
     try {
-        const imageData = await cloudinary.uploader.upload(req.file.path)
         let user = await User.findOne({ email: email })
         if (user) {
             return res.status(400).json({ success: false, message: "Email already exixts!" })
         }
+        const imageData = await cloudinary.uploader.upload(req.file.path)
         user = await User.create({
             name: name,
             email: email,
@@ -47,8 +47,7 @@ module.exports.login = async (req, res) => {
 
             return res.status(400).json({ success: false, message: "Incorrect Password!" })
         }
-        //genarate token
-
+    
         let token = createJWT(user._id, user.name, user.email, user.profilePic, user.isAdmin)
 
         res.status(200).json({ success: true, message: `Login Successfull `, token })
