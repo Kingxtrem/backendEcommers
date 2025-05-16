@@ -25,7 +25,7 @@ module.exports.createProduct = async (req, res) => {
 }
 module.exports.getAllProducts = async (req, res) => {
     try {
-        const products = await product.find();
+        const products = await product.findAll();
         res.status(200).json({ success: true, products });
     } catch (error) {
         console.error("Error fetching products:", error);
@@ -35,7 +35,7 @@ module.exports.getAllProducts = async (req, res) => {
 module.exports.getProductById = async (req, res) => {
     const { id } = req.params;
     try {
-        const productData = await product.findById(id);
+        const productData = await product.findOne(id);
         if (!productData) {
             return res.status(404).json({ success: false, message: "Product not found" });
         }
@@ -49,7 +49,7 @@ module.exports.updateProduct = async (req, res) => {
     const { id } = req.params;
     const { name, description, price, category, inStock ,rating} = req.body;
     try {
-        const productData = await product.findById(id);
+        const productData = await product.findOne(id);
         if (!productData) {
             return res.status(404).json({ success: false, message: "Product not found" });
         }
