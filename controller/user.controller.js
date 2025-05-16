@@ -49,7 +49,7 @@ module.exports.login = async (req, res) => {
         }
         //genarate token
 
-        let token = createJWT(user._id, user.name, user.email, user.profilePic)
+        let token = createJWT(user._id, user.name, user.email, user.profilePic, user.isAdmin)
 
         res.status(200).json({ success: true, message: `Login Successfull `, token })
 
