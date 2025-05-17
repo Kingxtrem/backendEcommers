@@ -74,18 +74,25 @@ module.exports.profile = async (req, res) => {
 }
 
 module.exports.AddToCart = async (req, res) => {
-    let { cart } = req.body
+    let { cart } = req.body;
     if (!cart) {
-        return res.status(404).json({ success: false, message: "No cart items found!" })
+        return res.status(404).json({ success: false, message: "No cart items found!" });
     }
     try {
-        let user = await User.findById(req.user._id)
-        user.cart.push(cart)
-        await user.save()
-        res.status(200).json({ success: true, message: "Cart updated successfully", user })
+        let user = await User.findById(req.user._id);
+        const existingItem = user.cart.find(item => item.product_id.toString() === cart.product_id);
+
+        if (existingItem) {
+            existingItem.quantity += cart.quantity || 1;
+        } else {
+            user.cart.push(cart);
+        }
+
+        await user.save();
+        res.status(200).json({ success: true, message: "Cart updated successfully", user });
     } catch (error) {
         console.error("Error during cart update:", error);
-        res.status(500).json({ success: false, message: error })
+        res.status(500).json({ success: false, message: error });
     }
 }
 
