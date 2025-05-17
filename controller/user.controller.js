@@ -83,7 +83,9 @@ module.exports.AddToCart = async (req, res) => {
         const existingItem = user.cart.find(item => item.product_id.toString() === cart.product_id);
 
         if (existingItem) {
-            existingItem.quantity += cart.quantity || 1;
+            existingItem.quantity += cart.quantity;
+            existingItem.price += cart.price;
+            
         } else {
             user.cart.push(cart);
         }
