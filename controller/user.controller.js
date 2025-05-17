@@ -85,7 +85,7 @@ module.exports.AddToCart = async (req, res) => {
         if (existingItem) {
             existingItem.quantity += cart.quantity;
             existingItem.price += cart.price;
-            user.cart.push(existingItem)
+            await existingItem.save();
         } else {
             user.cart.push(cart);
         }
