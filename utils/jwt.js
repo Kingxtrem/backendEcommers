@@ -1,12 +1,9 @@
 const jwt = require("jsonwebtoken")
 
 
-module.exports.createJWT = (_id, username, email, profilePic,isAdmin) => {
+module.exports.createJWT = (_id,isAdmin) => {
     let payload = {
         _id,
-        username,
-        email,
-        profilePic,
         isAdmin
     }
     let token = jwt.sign(payload, "my-secret", {

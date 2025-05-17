@@ -47,8 +47,8 @@ module.exports.login = async (req, res) => {
 
             return res.status(400).json({ success: false, message: "Incorrect Password!" })
         }
-    
-        let token = createJWT(user._id, user.name, user.email, user.profilePic, user.isAdmin)
+
+        let token = createJWT(user._id, user.isAdmin)
 
         res.status(200).json({ success: true, message: `Login Successfull `, token })
 
@@ -57,6 +57,33 @@ module.exports.login = async (req, res) => {
         res.status(500).json({ success: false, message: error })
     }
 }
+
+
+module.exports.cart = async (req, res) => {
+    let { cart } = req.body
+    if (!cart) {
+        return res.status(404).json({ success: false, message: "No cart items found!" })
+    }
+    try {
+        let user = await User.findByIdAndUpdate(req.user._id, { cart: cart }, { new: true })
+        res.status(200).json({ success: true, message: "Cart updated successfully", user })
+    } catch (error) {
+        console.error("Error during cart update:", error);
+        res.status(500).json({ success: false, message: error })
+    }
+}
+
 module.exports.profile = async (req, res) => {
-    res.status(200).json({ success: true,message:"Profile Found", User:req.user })
+    try {
+        let user = await User.findById(req.user._id)
+        if (!user) {
+            return res.status(404).json({ success: false, message: "User not found!" })
+        }
+        console.log(user)
+        return res.status(200).json({ success: true, message: "User found", user })
+    }
+    catch (error) {
+        console.error("Error during profile retrieval:", error);
+        res.status(500).json({ success: false, message: "Internal server problem" })
+    }
 }
