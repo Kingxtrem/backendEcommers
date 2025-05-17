@@ -58,8 +58,22 @@ module.exports.login = async (req, res) => {
     }
 }
 
+module.exports.profile = async (req, res) => {
+    try {
+        let user = await User.findById(req.user._id)
+        if (!user) {
+            return res.status(404).json({ success: false, message: "User not found!" })
+        }
+        console.log(user)
+        return res.status(200).json({ success: true, message: "User found", user })
+    }
+    catch (error) {
+        console.error("Error during profile retrieval:", error);
+        res.status(500).json({ success: false, message: "Internal server problem" })
+    }
+}
 
-module.exports.cart = async (req, res) => {
+module.exports.AddToCart = async (req, res) => {
     let { cart } = req.body
     if (!cart) {
         return res.status(404).json({ success: false, message: "No cart items found!" })
@@ -75,17 +89,18 @@ module.exports.cart = async (req, res) => {
     }
 }
 
-module.exports.profile = async (req, res) => {
+module.exports.RemoveFromCart = async (req, res) => {
+    let { product_id } = req.body
+    if (!product_id) {
+        return res.status(404).json({ success: false, message: "No cart items found!" })
+    }
     try {
         let user = await User.findById(req.user._id)
-        if (!user) {
-            return res.status(404).json({ success: false, message: "User not found!" })
-        }
-        console.log(user)
-        return res.status(200).json({ success: true, message: "User found", user })
-    }
-    catch (error) {
-        console.error("Error during profile retrieval:", error);
-        res.status(500).json({ success: false, message: "Internal server problem" })
+        user.cart = user.cart.filter((item) => item.product_id.toString() !== product_id)
+        await user.save()
+        res.status(200).json({ success: true, message: "Cart updated successfully", user })
+    } catch (error) {
+        console.error("Error during cart update:", error);
+        res.status(500).json({ success: false, message: error })
     }
 }
