@@ -83,9 +83,9 @@ module.exports.AddToCart = async (req, res) => {
         const existingItem = user.cart.find(item => item.product_id.toString() === cart.product_id);
 
         if (existingItem) {
-            existingItem.quantity += cart.quantity;
-            existingItem.price += cart.price;
-            await existingItem.save();
+            // Only update quantity
+            existingItem.quantity += cart.quantity || 1;
+            // Optionally, update other fields if needed (e.g., price, name, image)
         } else {
             user.cart.push(cart);
         }
@@ -94,7 +94,7 @@ module.exports.AddToCart = async (req, res) => {
         res.status(200).json({ success: true, message: "Cart updated successfully", user });
     } catch (error) {
         console.error("Error during cart update:", error);
-        res.status(500).json({ success: false, message: error });
+        res.status(500).json({ success: false, message: error.message || error });
     }
 }
 
