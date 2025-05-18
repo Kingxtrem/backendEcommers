@@ -8,7 +8,6 @@ module.exports.register = async (req, res) => {
 
 
     if (!name || !email || !password || !req.file) {
-        console.log("req.file", req.file)
         return res.status(400).json({ success: false, message: "All fields are required!" })
     }
     try {
@@ -64,7 +63,6 @@ module.exports.profile = async (req, res) => {
         if (!user) {
             return res.status(404).json({ success: false, message: "User not found!" })
         }
-        console.log(user)
         return res.status(200).json({ success: true, message: "User found", user })
     }
     catch (error) {
@@ -83,12 +81,12 @@ module.exports.AddToCart = async (req, res) => {
         const existingItem = user.cart.find(item => item.product_id.toString() === cart.product_id);
 
         if (existingItem) {
-            // Only update quantity
-            existingItem.quantity = cart.quantity+existingItem.quantity;
-        } else {
-            user.cart.push(cart);
+            existingItem.quantity = cart.quantity + existingItem.quantity;
+            user.markModified("cart");
+            await user.save();
+            return res.status(200).json({ success: true, message: "Cart updated successfully", user });
         }
-
+        user.cart.push(cart);
         await user.save();
         res.status(200).json({ success: true, message: "Cart updated successfully", user });
     } catch (error) {
@@ -104,7 +102,17 @@ module.exports.RemoveFromCart = async (req, res) => {
     }
     try {
         let user = await User.findById(req.user._id)
-        user.cart = user.cart.filter((item) => item.product_id.toString() !== product_id)
+        const itemIndex = user.cart.findIndex(item => item.product_id.toString() === product_id);
+
+        const item = user.cart[itemIndex];
+
+        if (item.quantity === 1) {
+            user.cart.splice(itemIndex, 1);
+        } else {
+            item.quantity -= 1;
+        }
+
+        user.markModified("cart");
         await user.save()
         res.status(200).json({ success: true, message: "Cart updated successfully", user })
     } catch (error) {
