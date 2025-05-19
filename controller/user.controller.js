@@ -102,6 +102,28 @@ module.exports.RemoveFromCart = async (req, res) => {
     }
     try {
         let user = await User.findById(req.user._id)
+        
+        user.cart = user.cart.filter(item => item.product_id.toString() !== product_id);
+        if (user.cart.length === 0) {
+            user.cart = [];
+        }
+
+        user.markModified("cart");
+        await user.save()
+        res.status(200).json({ success: true, message: "Cart updated successfully", user })
+    } catch (error) {
+        console.error("Error during cart update:", error);
+        res.status(500).json({ success: false, message: error })
+    }
+}
+
+module.exports.Removeonequantity = async (req, res) => {
+    let { product_id } = req.body
+    if (!product_id) {
+        return res.status(404).json({ success: false, message: "No cart items found!" })
+    }
+    try {
+        let user = await User.findById(req.user._id)
         const itemIndex = user.cart.findIndex(item => item.product_id.toString() === product_id);
 
         const item = user.cart[itemIndex];
@@ -111,6 +133,28 @@ module.exports.RemoveFromCart = async (req, res) => {
         } else {
             item.quantity -= 1;
         }
+
+        user.markModified("cart");
+        await user.save()
+        res.status(200).json({ success: true, message: "Cart updated successfully", user })
+    } catch (error) {
+        console.error("Error during cart update:", error);
+        res.status(500).json({ success: false, message: error })
+    }
+}
+
+module.exports.Addonequantity = async (req, res) => {
+    let { product_id } = req.body
+    if (!product_id) {
+        return res.status(404).json({ success: false, message: "No cart items found!" })
+    }
+    try {
+        let user = await User.findById(req.user._id)
+        const itemIndex = user.cart.findIndex(item => item.product_id.toString() === product_id);
+
+        const item = user.cart[itemIndex];
+
+        item.quantity += 1;
 
         user.markModified("cart");
         await user.save()
