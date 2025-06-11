@@ -1,15 +1,44 @@
+// const express = require("express");
+// const connectDB = require("./config/dbconn");
+// const cors = require('cors');
+// const dotenv = require("dotenv")
+// const userRouter = require("./router/user.route");
+// const productRouter = require("./router/product.route");
+// const app = express();
+
+// dotenv.config();
+// app.use(cors());
+// app.use(express.urlencoded({ extended: true })); // Middleware to parse URL-encoded data
+// app.use(express.json()); // Middleware to parse JSON data
+
+// connectDB();
+
+// app.use("/user", userRouter);
+// app.use("/product", productRouter);
+
+// app.get("/", (req, res) => {
+//     res.status(200).json({ success: true, message: "Welcome to the backend server" });
+// });
+
+// app.listen(5000, () => {
+//     console.log("Server is running on port 5000");
+// });
+
+
 const express = require("express");
 const connectDB = require("./config/dbconn");
-const cors = require('cors');
-const dotenv = require("dotenv")
+const cors = require("cors");
+const dotenv = require("dotenv");
 const userRouter = require("./router/user.route");
 const productRouter = require("./router/product.route");
-const app = express();
 
 dotenv.config();
+
+const app = express();
+
 app.use(cors());
-app.use(express.urlencoded({ extended: true })); // Middleware to parse URL-encoded data
-app.use(express.json()); // Middleware to parse JSON data
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
 connectDB();
 
@@ -17,9 +46,10 @@ app.use("/user", userRouter);
 app.use("/product", productRouter);
 
 app.get("/", (req, res) => {
-    res.status(200).json({ success: true, message: "Welcome to the backend server" });
+  res.status(200).json({ success: true, message: "Welcome to the backend server" });
 });
 
-app.listen(5000, () => {
-    console.log("Server is running on port 5000");
-});
+// ❗ REMOVE app.listen()
+
+// ✅ EXPORT app for Vercel
+module.exports = app;
