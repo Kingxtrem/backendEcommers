@@ -1,6 +1,5 @@
 {
   "version": 2,
-  "name": "ecommerce-backend",
   "builds": [
     {
       "src": "index.js",
