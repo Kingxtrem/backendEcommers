@@ -49,19 +49,21 @@ module.exports.getProductById = async (req, res) => {
 }
 module.exports.updateProduct = async (req, res) => {
     const { id } = req.params;
-    const { name, description, price, category, inStock ,rating} = req.body;
+    const { name, description, price, category, inStock ,rating } = req.body;
     try {
         const productData = await product.findById(id);
         if (!productData) {
             return res.status(404).json({ success: false, message: "Product not found" });
         }
+        const image = await streamUpload(req.file.buffer);
         const updatedProduct = await product.findByIdAndUpdate(id, {
             name,
             description,
             price,
             category,
             inStock,
-            rating
+            rating,
+            image: image.secure_url || productData.image // Use existing image if not provided
         }, { new: true });
         res.status(200).json({ success: true, message: "Product updated successfully", updatedProduct });
     } catch (error) {
