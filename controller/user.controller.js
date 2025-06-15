@@ -1,7 +1,7 @@
 const User = require("../model/user.model")
 const { createJWT } = require("../utils/jwt")
 const cloudinary = require("../utils/cloudinary")
-
+const streamUpload = require('../middleware/steamifier')
 
 module.exports.register = async (req, res) => {
     let { name, email, password } = req.body;
@@ -15,7 +15,8 @@ module.exports.register = async (req, res) => {
         if (user) {
             return res.status(400).json({ success: false, message: "Email already exixts!" })
         }
-        const imageData = await cloudinary.uploader.upload(req.file.path)
+         const imageData = await streamUpload(req.file.buffer);
+
         user = await User.create({
             name: name,
             email: email,

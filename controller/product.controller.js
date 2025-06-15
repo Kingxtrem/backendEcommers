@@ -1,5 +1,7 @@
 const product= require('../model/product.model');
 const cloudinary = require('../utils/cloudinary');
+const streamUpload=require('../middleware/steamifier')
+
 
 module.exports.createProduct = async (req, res) => {
     const { name, description, price, category, inStock ,rating} = req.body;
@@ -7,7 +9,7 @@ module.exports.createProduct = async (req, res) => {
         return res.status(400).json({ success: false, message: "All fields are required!" });
     }
     try {
-        const imageData = await cloudinary.uploader.upload(req.file.path);
+       const imageData = await streamUpload(req.file.buffer);
         const newProduct = await product.create({
             name,
             description,
