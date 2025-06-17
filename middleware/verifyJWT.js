@@ -9,7 +9,7 @@ module.exports.isvaliduser = async (req, res, next) => {
     if(isValidJWT){
          next()
     }else{
-        return res.status(401).json({success:false,message:"Invalid JWT"})
+        return res.status(401).json({success:false,message:"Session expired, please login again"})
     }
 }
 module.exports.isAdmin = async (req, res, next) => {
@@ -22,6 +22,6 @@ module.exports.isAdmin = async (req, res, next) => {
     if(isValidJWT.isAdmin){
          next()
     }else{
-        return res.status(401).json({success:false,message:"You are not authorized"})
+        return res.status(401).json({success:false,message:"Session expired, please login again"})
     }
 }
