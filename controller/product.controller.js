@@ -29,7 +29,7 @@ module.exports.getAllProducts = async (req, res) => {
     try {
         // Parse page and limit, set defaults if not provided
         let page = parseInt(req.query.page) || 1;
-        let limit = parseInt(req.query.limit) || 8;
+        let limit =parseInt(req.query.limit) || total;
         if (page < 1) page = 1;
         if (limit < 1) limit = 8;
 
