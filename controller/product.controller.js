@@ -27,8 +27,28 @@ module.exports.createProduct = async (req, res) => {
 }
 module.exports.getAllProducts = async (req, res) => {
     try {
-        const products = await product.find();
-        res.status(200).json({ success: true, data: products });
+        // Parse page and limit, set defaults if not provided
+        let page = parseInt(req.query.page) || 1;
+        let limit = parseInt(req.query.limit) || 8;
+        if (page < 1) page = 1;
+        if (limit < 1) limit = 8;
+
+        const skip = (page - 1) * limit;
+
+        // Get total count for frontend (optional)
+        const total = await product.countDocuments();
+
+        // Fetch paginated products
+        const products = await product.find().skip(skip).limit(limit);
+
+        res.status(200).json({
+            success: true,
+            data: products,
+            total,
+            page,
+            limit,
+            hasMore: skip + products.length < total
+        });
     } catch (error) {
         console.error("Error fetching products:", error);
         res.status(500).json({ success: false, message: "Internal server problem" });
