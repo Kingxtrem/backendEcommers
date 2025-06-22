@@ -27,6 +27,7 @@ module.exports.createProduct = async (req, res) => {
 }
 module.exports.getAllProducts = async (req, res) => {
     try {
+        const total = await product.countDocuments();
         // Parse page and limit, set defaults if not provided
         let page = parseInt(req.query.page) || 1;
         let limit =parseInt(req.query.limit) || total;
@@ -36,7 +37,6 @@ module.exports.getAllProducts = async (req, res) => {
         const skip = (page - 1) * limit;
 
         // Get total count for frontend (optional)
-        const total = await product.countDocuments();
 
         // Fetch paginated products
         const products = await product.find().skip(skip).limit(limit);
