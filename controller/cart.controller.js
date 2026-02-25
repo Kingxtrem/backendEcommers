@@ -19,7 +19,6 @@ const getPopulatedCart = async (userId) => {
         }));
 };
 
-
 module.exports.AddToCart = async (req, res) => {
     let { cart: inputCart } = req.body;
     if (!inputCart || !inputCart.product_id) {
