@@ -1,15 +1,15 @@
-const product= require('../model/product.model');
+const product = require('../model/product.model');
 const cloudinary = require('../utils/cloudinary');
-const streamUpload=require('../middleware/steamifier')
+const streamUpload = require('../middleware/streamifier')
 
 
 module.exports.createProduct = async (req, res) => {
-    const { name, description, price, category, inStock ,rating} = req.body;
+    const { name, description, price, category, inStock, rating } = req.body;
     if (!name || !description || !price || !category || !inStock || !req.file) {
         return res.status(400).json({ success: false, message: "All fields are required!" });
     }
     try {
-       const imageData = await streamUpload(req.file.buffer);
+        const imageData = await streamUpload(req.file.buffer);
         const newProduct = await product.create({
             name,
             description,
@@ -71,13 +71,18 @@ module.exports.getProductById = async (req, res) => {
 }
 module.exports.updateProduct = async (req, res) => {
     const { id } = req.params;
-    const { name, description, price, category, inStock ,rating } = req.body;
+    const { name, description, price, category, inStock, rating } = req.body;
     try {
         const productData = await product.findById(id);
         if (!productData) {
             return res.status(404).json({ success: false, message: "Product not found" });
         }
-        const image = await streamUpload(req.file.buffer);
+        let imageUrl = productData.image;
+        if (req.file && req.file.buffer) {
+            const image = await streamUpload(req.file.buffer);
+            imageUrl = image.secure_url;
+        }
+
         const updatedProduct = await product.findByIdAndUpdate(id, {
             name,
             description,
@@ -85,7 +90,7 @@ module.exports.updateProduct = async (req, res) => {
             category,
             inStock,
             rating,
-            image: image.secure_url || productData.image // Use existing image if not provided
+            image: imageUrl
         }, { new: true });
         res.status(200).json({ success: true, message: "Product updated successfully", updatedProduct });
     } catch (error) {

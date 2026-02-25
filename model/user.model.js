@@ -1,5 +1,5 @@
 const mongoose = require("mongoose")
-const bcrypt= require("bcrypt")
+const bcrypt = require("bcrypt")
 
 
 const userSchema = new mongoose.Schema({
@@ -24,17 +24,13 @@ const userSchema = new mongoose.Schema({
     isAdmin: {
         type: Boolean,
         default: false
-    },
-    cart: {
-        type: Array,
-        default: []
-    },
+    }
 }, {
     timestamps: true
 
 })
 
-userSchema.pre("save", async function (next){
+userSchema.pre("save", async function (next) {
     if (!this.isModified("password")) {
         return next()
     }
@@ -43,7 +39,7 @@ userSchema.pre("save", async function (next){
     next()
 })
 
-userSchema.methods.matchPassword =async function (enteredPassword){
+userSchema.methods.matchPassword = async function (enteredPassword) {
     return await bcrypt.compare(enteredPassword, this.password)
 }
 

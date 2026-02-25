@@ -4,6 +4,7 @@ const cors = require('cors');
 const dotenv = require("dotenv")
 const userRouter = require("./router/user.route");
 const productRouter = require("./router/product.route");
+const orderRouter = require("./router/order.route");
 const app = express();
 
 dotenv.config();
@@ -15,6 +16,7 @@ connectDB();
 
 app.use("/user", userRouter);
 app.use("/product", productRouter);
+app.use("/order", orderRouter);
 
 app.get("/", (req, res) => {
     res.status(200).json({ success: true, message: "Welcome to the backend server" });
