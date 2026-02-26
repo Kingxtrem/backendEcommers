@@ -22,7 +22,7 @@ module.exports.createProduct = async (req, res) => {
         res.status(201).json({ success: true, message: "Product created successfully", newProduct });
     } catch (error) {
         console.error("Error creating product:", error);
-        res.status(500).json({ success: false, message: "Internal server problem" });
+        res.status(500).json({ success: false, message: "Internal server problem", error });
     }
 }
 module.exports.getAllProducts = async (req, res) => {
@@ -62,7 +62,7 @@ module.exports.getAllProducts = async (req, res) => {
         });
     } catch (error) {
         console.error("Error fetching products:", error);
-        res.status(500).json({ success: false, message: "Internal server problem" });
+        res.status(500).json({ success: false, message: "Internal server problem", error });
     }
 }
 
@@ -76,7 +76,7 @@ module.exports.getFeaturedProducts = async (req, res) => {
         });
     } catch (error) {
         console.error("Error fetching featured products:", error);
-        res.status(500).json({ success: false, message: "Internal server problem" });
+        res.status(500).json({ success: false, message: "Internal server problem", error });
     }
 }
 
@@ -90,7 +90,7 @@ module.exports.getProductById = async (req, res) => {
         res.status(200).json({ success: true, productData });
     } catch (error) {
         console.error("Error fetching product:", error);
-        res.status(500).json({ success: false, message: "Internal server problem" });
+        res.status(500).json({ success: false, message: "Internal server problem", error });
     }
 }
 module.exports.updateProduct = async (req, res) => {
@@ -119,7 +119,7 @@ module.exports.updateProduct = async (req, res) => {
         res.status(200).json({ success: true, message: "Product updated successfully", updatedProduct });
     } catch (error) {
         console.error("Error updating product:", error);
-        res.status(500).json({ success: false, message: "Internal server problem" });
+        res.status(500).json({ success: false, message: "Internal server problem", error });
     }
 }
 module.exports.deleteProduct = async (req, res) => {
@@ -133,6 +133,6 @@ module.exports.deleteProduct = async (req, res) => {
         res.status(200).json({ success: true, message: "Product deleted successfully" });
     } catch (error) {
         console.error("Error deleting product:", error);
-        res.status(500).json({ success: false, message: "Internal server problem" });
+        res.status(500).json({ success: false, message: "Internal server problem", error });
     }
 }

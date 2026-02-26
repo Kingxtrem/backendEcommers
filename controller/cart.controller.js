@@ -71,7 +71,7 @@ module.exports.AddToCart = async (req, res) => {
         res.status(200).json({ success: true, message: "Cart updated successfully", user: { cart: formattedCart } });
     } catch (error) {
         console.error("Error during AddToCart:", error);
-        res.status(500).json({ success: false, message: "Internal server error" });
+        res.status(500).json({ success: false, message: "Internal server error", error });
     }
 };
 
@@ -103,7 +103,7 @@ module.exports.RemoveFromCart = async (req, res) => {
         res.status(200).json({ success: true, message: "Item removed from cart", user: { cart: formattedCart } });
     } catch (error) {
         console.error("Error during RemoveFromCart:", error);
-        res.status(500).json({ success: false, message: "Internal server error" });
+        res.status(500).json({ success: false, message: "Internal server error", error });
     }
 };
 
@@ -137,7 +137,7 @@ module.exports.Removeonequantity = async (req, res) => {
         res.status(200).json({ success: true, message: "Cart updated successfully", user: { cart: formattedCart } });
     } catch (error) {
         console.error("Error during Removeonequantity:", error);
-        res.status(500).json({ success: false, message: "Internal server error" });
+        res.status(500).json({ success: false, message: "Internal server error", error });
     }
 };
 
@@ -176,7 +176,7 @@ module.exports.Addonequantity = async (req, res) => {
         res.status(200).json({ success: true, message: "Cart updated successfully", user: { cart: formattedCart } });
     } catch (error) {
         console.error("Error during Addonequantity:", error);
-        res.status(500).json({ success: false, message: "Internal server error" });
+        res.status(500).json({ success: false, message: "Internal server error", error });
     }
 };
 

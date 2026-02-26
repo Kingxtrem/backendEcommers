@@ -26,7 +26,7 @@ module.exports.register = async (req, res) => {
         res.status(201).json({ success: true, message: `${user.name} Registration Successful` })
     } catch (error) {
         console.error("Error during registration:", error);
-        res.status(500).json({ success: false, message: "Internal server problem" })
+        res.status(500).json({ success: false, message: "Internal server problem", error })
     }
 }
 module.exports.login = async (req, res) => {
@@ -54,7 +54,7 @@ module.exports.login = async (req, res) => {
 
     } catch (error) {
         console.error("Error during login:", error);
-        res.status(500).json({ success: false, message: "Internal server error" })
+        res.status(500).json({ success: false, message: "Internal server error", error })
     }
 }
 
@@ -73,7 +73,7 @@ module.exports.profile = async (req, res) => {
         return res.status(200).json({ success: true, message: "User found", user });
     } catch (error) {
         console.error("Error during profile retrieval:", error);
-        res.status(500).json({ success: false, message: "Internal server problem" });
+        res.status(500).json({ success: false, message: "Internal server problem", error });
     }
 }
 

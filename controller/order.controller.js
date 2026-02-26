@@ -64,7 +64,7 @@ module.exports.createOrder = async (req, res) => {
 
     } catch (error) {
         console.error("Error creating order:", error);
-        res.status(500).json({ success: false, message: "Internal server problem" });
+        res.status(500).json({ success: false, message: "Internal server problem", error });
     }
 };
 
@@ -111,7 +111,7 @@ module.exports.verifyPayment = async (req, res) => {
         }
     } catch (error) {
         console.error("Error verifying payment:", error);
-        res.status(500).json({ success: false, message: "Internal server problem" });
+        res.status(500).json({ success: false, message: "Internal server problem", error });
     }
 };
 
@@ -121,7 +121,7 @@ module.exports.getUserOrders = async (req, res) => {
         res.status(200).json({ success: true, orders });
     } catch (error) {
         console.error("Error fetching user orders:", error);
-        res.status(500).json({ success: false, message: "Internal server problem" });
+        res.status(500).json({ success: false, message: "Internal server problem", error });
     }
 };
 
@@ -137,6 +137,6 @@ module.exports.getOrderById = async (req, res) => {
         res.status(200).json({ success: true, order });
     } catch (error) {
         console.error("Error fetching order details:", error);
-        res.status(500).json({ success: false, message: "Internal server problem" });
+        res.status(500).json({ success: false, message: "Internal server problem", error });
     }
 };
