@@ -22,6 +22,6 @@ module.exports.isAdmin = async (req, res, next) => {
     if (isValidJWT.isAdmin) {
         next()
     } else {
-        return res.status(401).json({ success: false, message: "Session expired, please login again" })
+        return res.status(403).json({ success: false, message: "You are not authorized to Access this" })
     }
 }

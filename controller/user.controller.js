@@ -76,5 +76,3 @@ module.exports.profile = async (req, res) => {
         res.status(500).json({ success: false, message: "Internal server problem", error });
     }
 }
-
-// Cart endpoints have been relocated to cart.controller.js
